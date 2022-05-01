@@ -2,15 +2,14 @@
 
 import os
 import json
-import sqlalchemy
 from application.models import *
 import datetime
 import zipfile
 import random
 import sys
 
-from flask import Flask, render_template, request, send_file
-from sqlalchemy.sql import text
+from flask import Flask, render_template, session, request, send_file
+from flask.ext.session import Session
 from configparser import ConfigParser
 from io import BytesIO
 
@@ -19,6 +18,7 @@ from application.metabase.embed_link import get_dashboard_embed
 app = Flask(__name__)
 app.config['TESTING'] = True
 
+Session(app)
 
 # Route to homepage
 @app.route("/", methods=['GET'])
@@ -33,6 +33,9 @@ def render_game_create():
 
 @app.route("/game/create", methods=['POST'])
 def create_game():
+    data = request.data
+    print(data)
+    create_game(data=data)
     pass
 
 
@@ -50,13 +53,13 @@ def join_game(id):
 def render_game_play(id):
     players = get_players()
     favors = get_favors()
-    my_favors = get_my_favors()
+    my_favors = get_my_favors(user_id=session["user_id"])
     return render_template('play.html', page_title="The Favors Game™", players=players, favors=favors, my_favors=my_favors)
 
 
 @app.route("/game/<id>/report", methods=['GET'])
 def render_game_report(id):
-    dashboardUrl = get_dashboard_embed(dashboard_id=30)
+    dashboardUrl = get_dashboard_embed(game_id=id)
     return render_template('report.html', page_title=f"Game {id} results", embedUrl=dashboardUrl)
 
 
