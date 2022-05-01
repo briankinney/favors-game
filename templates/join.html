@@ -7,13 +7,13 @@
     <div class="col p-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Join Game</h5>
-                <form action="{{ url_for('create_game') }}">
+                <h5 class="card-title">Join Game: {{ game_data["name"] }}</h5>
+                <form action="/game/{{ game_data['id'] }}/join" method="post">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Game name:</label>
-                        <input type="email" class="form-control" id="name" aria-describedby="name">
+                        <label for="username" class="form-label">Enter your username:</label>
+                        <input type="email" class="form-control" id="username" aria-describedby="username">
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" name="username" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
