@@ -16,6 +16,7 @@ from io import BytesIO
 from application.metabase.embed_link import get_dashboard_embed
 
 app = Flask(__name__)
+SESSION_TYPE = "filesystem"
 app.config['TESTING'] = True
 
 Session(app)
