@@ -53,6 +53,28 @@ def get_game_data(game_id):
         return game_data
 
 
+def create_exchange_object(game_id, favor_id, giver_id, receiver_id):
+    sql = text("""INSERT INTO exchanges (game_id, favor_id, giving_player, receiving_player)
+                  VALUES (:1, :2, :3, :4) RETURNING id""")
+
+    with engine.connect() as conn:
+        result = conn.execute(sql, game_id, favor_id, giver_id, receiver_id)
+        assert result.rowcount == 1
+        row = result.fetchone()
+        return row['id']
+
+
+def verify_exchange_completion(exchange_id, player_id, game_id):
+    sql = text("""UPDATE exchanges SET verified = true WHERE id = :1 AND receiver_id = :2 AND game_id = :3 RETURNING id""")
+
+    with engine.connect() as conn:
+        result = conn.execute(sql, exchange_id, player_id, game_id)
+        if result.rowcount == 0:
+            raise Exception(f"Unable to update exchange {exchange_id}. Was it received by player {player_id}?")
+        elif result.rowcount != 1:
+            raise Exception("Something really strange happened.")
+
+
 def create_player(form_data, game_id):
     sql = "INSERT INTO players (name, game_id) VALUES ('{name}', {game_id}) RETURNING ID;".format(
         name=form_data['username'],
