@@ -8,7 +8,7 @@ import zipfile
 import random
 import sys
 
-from flask import Flask, render_template, session, request, send_file
+from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session
 from configparser import ConfigParser
 from io import BytesIO
@@ -32,10 +32,12 @@ def render_game_create():
 
 
 @app.route("/game/create", methods=['POST'])
-def create_game():
-    data = request.data
-    print(data)
-    create_game(data=data)
+def post_create_game():
+    data = request.form
+    print('data is:', data)
+    db_result = create_game(data)
+    print("db result is ", db_result)
+    return redirect(url_for('join_game', id=db_result))
 
 
 @app.route("/game/<id>/join", methods=['GET'])
