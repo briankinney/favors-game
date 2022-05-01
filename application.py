@@ -49,11 +49,18 @@ def render_game_join(game_id):
 
 @app.route("/game/<game_id>/join", methods=['POST'])
 def join_game(game_id):
-    pass
+    form_data = request.form
+    print('form data is:', form_data)
+    player_id = create_player(form_data, game_id)
+    print("db result is ", player_id)
+    player_data = get_player_data(player_id)
+
+    # save user data to session
+    return redirect(url_for('render_game_play', game_id=game_id))
 
 
-@app.route("/game/<id>/play", methods=['GET'])
-def render_game_play(id):
+@app.route("/game/<game_id>/play", methods=['GET'])
+def render_game_play(game_id):
     players = get_players()
     favors = get_favors()
     my_favors = get_my_favors(user_id=session["user_id"])

@@ -51,3 +51,25 @@ def get_game_data(game_id):
         result = conn.execute(text(sql))
         game_data = [dict(row) for row in result][0]
         return game_data
+
+
+def create_player(form_data, game_id):
+    sql = "INSERT INTO players (name, game_id) VALUES ('{name}', {game_id}) RETURNING ID;".format(
+        name=form_data['username'],
+        game_id=game_id
+    )
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        inserted_id = result.fetchall()[0]['id']
+        print(inserted_id)
+        return inserted_id
+
+
+def get_player_data(player_id):
+    sql = 'SELECT * FROM players WHERE id = {player_id}'.format(player_id=player_id)
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result][0]
+        return data
