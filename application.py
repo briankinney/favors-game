@@ -40,9 +40,11 @@ def post_create_game():
     return redirect(url_for('join_game', game_id=db_result))
 
 
-@app.route("/game/<id>/join", methods=['GET'])
-def render_game_join(id):
-    return render_template('join.html', page_title="Join game")
+@app.route("/game/<game_id>/join", methods=['GET'])
+def render_game_join(game_id):
+    game_data = get_game_data(game_id)
+    print('game data is a list of columns', game_data)
+    return render_template('join.html', page_title="Join game", game_data=game_data)
 
 
 @app.route("/game/<game_id>/join", methods=['POST'])
