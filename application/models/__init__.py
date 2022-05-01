@@ -16,6 +16,7 @@ def create_game(data):
         print(inserted_id)
         return inserted_id
 
+
 def get_players():
     sql = 'SELECT * FROM players;'
 
@@ -41,3 +42,12 @@ def get_my_favors(user_id):
         result = conn.execute(text(sql))
         print(result)
         return result
+
+
+def get_game_data(game_id):
+    sql = 'SELECT * FROM games WHERE id = {game_id}'.format(game_id=game_id)
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        game_data = [dict(row) for row in result][0]
+        return game_data
