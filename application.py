@@ -9,7 +9,7 @@ import random
 import sys
 
 from flask import Flask, render_template, session, request, send_file
-from flask.ext.session import Session
+from flask_session import Session
 from configparser import ConfigParser
 from io import BytesIO
 
@@ -36,7 +36,6 @@ def create_game():
     data = request.data
     print(data)
     create_game(data=data)
-    pass
 
 
 @app.route("/game/<id>/join", methods=['GET'])
@@ -54,7 +53,10 @@ def render_game_play(id):
     players = get_players()
     favors = get_favors()
     my_favors = get_my_favors(user_id=session["user_id"])
-    return render_template('play.html', page_title="The Favors Game™", players=players, favors=favors, my_favors=my_favors)
+    return render_template('play.html', page_title="The Favors Game™",
+                           players=players,
+                           favors=favors,
+                           my_favors=my_favors)
 
 
 @app.route("/game/<id>/report", methods=['GET'])
