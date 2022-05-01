@@ -6,7 +6,7 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
 def create_game(data):
-    sql = "INSERT INTO games (name) VALUES ('the name of a game');"
+    sql = "INSERT INTO games (name) VALUES ('{name}');".format(name=data['name'])
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
@@ -32,7 +32,7 @@ def get_favors():
 
 
 def get_my_favors(user_id):
-    sql = 'SELECT * FROM exchanges'  # TODO add filter of giving player id
+    sql = 'SELECT * FROM exchanges WHERE giving_player = {user_id}'.format(user_id=user_id)
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
