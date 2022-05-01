@@ -34,23 +34,23 @@ def create_game():
     pass
 
 @app.route("/game/<id>/join", methods=['GET'])
-def render_game_join():
+def render_game_join(id):
     return render_template('join.html', page_title="Join game")
 
 @app.route("/game/<id>/join", methods=['POST'])
-def join_game():
+def join_game(id):
     pass
 
 @app.route("/game/<id>/play", methods=['GET'])
-def render_game_play():
+def render_game_play(id):
     return render_template('play.html', page_title="The Favors Game™")
 
 @app.route("/game/<id>/report", methods=['GET'])
-def render_game_report():
+def render_game_report(id):
     return render_template('report.html', page_title=f"Game {id} results")
 
 @app.route("/game/<id>/exchange/create", methods=['POST'])
-def exchange_favor():
+def exchange_favor(id):
     pass
 
 # Necessary to run app if app.py is executed as a script
