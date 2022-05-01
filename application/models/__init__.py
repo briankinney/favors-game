@@ -55,7 +55,7 @@ def get_game_data(game_id):
 
 def create_player(form_data, game_id):
     sql = "INSERT INTO players (name, game_id) VALUES ('{name}', {game_id}) RETURNING ID;".format(
-        name=form_data['username'],
+        name=form_data['name'],
         game_id=game_id
     )
 
