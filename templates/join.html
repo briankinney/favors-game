@@ -12,9 +12,9 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Enter your username:</label>
                         {% if session.player_data %}
-                        <input class="form-control" id="name" value="{{ session.player_data['id'] }}" aria-describedby="name">
+                        <input class="form-control" id="name" name="name" value="{{ session.player_data['id'] }}" aria-describedby="name">
                         {% else %}
-                        <input class="form-control" id="name" aria-describedby="name">
+                        <input class="form-control" id="name" name="name" aria-describedby="name">
                         {% endif %}
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
