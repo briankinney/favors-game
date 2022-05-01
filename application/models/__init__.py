@@ -18,10 +18,10 @@ def create_game(data):
 
 
 def get_players(game_id):
-    sql = text("SELECT * FROM players WHERE game_id = :1;")
+    sql = text("SELECT * FROM players WHERE game_id = :game_id;")
 
     with engine.connect() as conn:
-        result = conn.execute(sql, game_id)
+        result = conn.execute(sql, game_id=game_id)
         print(result)
         return result
 
@@ -55,20 +55,20 @@ def get_game_data(game_id):
 
 def create_exchange_object(game_id, favor_id, giver_id, receiver_id):
     sql = text("""INSERT INTO exchanges (game_id, favor_id, giving_player, receiving_player)
-                  VALUES (:1, :2, :3, :4) RETURNING id""")
+                  VALUES (:gid, :fid, :gvid, :rid) RETURNING id""")
 
     with engine.connect() as conn:
-        result = conn.execute(sql, game_id, favor_id, giver_id, receiver_id)
+        result = conn.execute(sql, gid=game_id, fid=favor_id, gvid=giver_id, rid=receiver_id)
         assert result.rowcount == 1
         row = result.fetchone()
         return row['id']
 
 
 def verify_exchange_completion(exchange_id, player_id, game_id):
-    sql = text("""UPDATE exchanges SET verified = true WHERE id = :1 AND receiver_id = :2 AND game_id = :3 RETURNING id""")
+    sql = text("""UPDATE exchanges SET verified = true WHERE id = :id AND receiver_id = :rid AND game_id = :gid RETURNING id""")
 
     with engine.connect() as conn:
-        result = conn.execute(sql, exchange_id, player_id, game_id)
+        result = conn.execute(sql, id=exchange_id, rid=player_id, gid=game_id)
         if result.rowcount == 0:
             raise Exception(f"Unable to update exchange {exchange_id}. Was it received by player {player_id}?")
         elif result.rowcount != 1:

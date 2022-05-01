@@ -16,8 +16,8 @@ from io import BytesIO
 from application.metabase.embed_link import get_dashboard_embed
 
 app = Flask(__name__)
-SESSION_TYPE = "filesystem"
 app.config['TESTING'] = True
+app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
 
@@ -54,6 +54,7 @@ def join_game(game_id):
     print('form data is:', form_data)
     player_id = create_player(form_data, game_id)
     print("db result is ", player_id)
+    session["id"] = player_id
     player_data = get_player_data(player_id)
 
     # save user data to session
@@ -64,7 +65,9 @@ def join_game(game_id):
 def render_game_play(game_id):
     players = get_players(game_id)
     favors = get_favors()
-    my_favors = get_my_favors(user_id=session["user_id"])
+    print(session)
+
+    my_favors = get_my_favors(user_id=session["id"])
     return render_template('play.html', page_title="The Favors Game™",
                            players=players,
                            favors=favors,
