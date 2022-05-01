@@ -14,6 +14,8 @@ from sqlalchemy.sql import text
 from configparser import ConfigParser
 from io import BytesIO
 
+from application.metabase.embed_link import get_dashboard_embed
+
 app = Flask(__name__)
 app.config['TESTING'] = True
 
@@ -54,7 +56,8 @@ def render_game_play(id):
 
 @app.route("/game/<id>/report", methods=['GET'])
 def render_game_report(id):
-    return render_template('report.html', page_title=f"Game {id} results")
+    dashboardUrl = get_dashboard_embed(dashboard_id=30)
+    return render_template('report.html', page_title=f"Game {id} results", embedUrl=dashboardUrl)
 
 
 @app.route("/game/<id>/exchange/create", methods=['POST'])
