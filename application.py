@@ -61,7 +61,7 @@ def render_game_play(id):
 
 @app.route("/game/<id>/report", methods=['GET'])
 def render_game_report(id):
-    dashboardUrl = get_dashboard_embed(dashboard_id=30)
+    dashboardUrl = get_dashboard_embed(game_id=id)
     return render_template('report.html', page_title=f"Game {id} results", embedUrl=dashboardUrl)
 
 
