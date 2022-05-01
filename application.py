@@ -61,7 +61,7 @@ def join_game(game_id):
 
 @app.route("/game/<game_id>/play", methods=['GET'])
 def render_game_play(game_id):
-    players = get_players()
+    players = get_players(game_id)
     favors = get_favors()
     my_favors = get_my_favors(user_id=session["user_id"])
     return render_template('play.html', page_title="The Favors Game™",

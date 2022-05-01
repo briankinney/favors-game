@@ -17,11 +17,11 @@ def create_game(data):
         return inserted_id
 
 
-def get_players():
-    sql = 'SELECT * FROM players;'
+def get_players(game_id):
+    sql = text("SELECT * FROM players WHERE game_id = :1;")
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, game_id)
         print(result)
         return result
 
