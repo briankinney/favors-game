@@ -10,10 +10,14 @@
                 <h5 class="card-title">Join Game: {{ game_data["name"] }}</h5>
                 <form action="/game/{{ game_data['id'] }}/join" method="post">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Enter your username:</label>
-                        <input class="form-control" id="username" aria-describedby="username">
+                        <label for="name" class="form-label">Enter your username:</label>
+                        {% if session.player_data %}
+                        <input class="form-control" id="name" value="{{ session.player_data['id'] }}" aria-describedby="name">
+                        {% else %}
+                        <input class="form-control" id="name" aria-describedby="name">
+                        {% endif %}
                     </div>
-                    <button type="submit" name="username" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
