@@ -21,10 +21,37 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
 # Route to homepage
-@app.route("/")
+@app.route("/", methods=['GET'])
 def render_index():
     return render_template('home.html', page_title="Home")
 
+@app.route("/game/create", methods=['GET'])
+def render_game_create():
+    return render_template('create.html', page_title="Create a game")
+
+@app.route("/game/create", methods=['POST'])
+def create_game():
+    pass
+
+@app.route("/game/<id>/join", methods=['GET'])
+def render_game_join():
+    return render_template('join.html', page_title="Join game")
+
+@app.route("/game/<id>/join", methods=['POST'])
+def join_game():
+    pass
+
+@app.route("/game/<id>/play", methods=['GET'])
+def render_game_play():
+    return render_template('play.html', page_title="The Favors Game™")
+
+@app.route("/game/<id>/report", methods=['GET'])
+def render_game_report():
+    return render_template('report.html', page_title=f"Game {id} results")
+
+@app.route("/game/<id>/exchange/create", methods=['POST'])
+def exchange_favor():
+    pass
 
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
