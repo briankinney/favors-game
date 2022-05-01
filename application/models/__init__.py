@@ -5,6 +5,14 @@ DATABASE_URL = f"postgresql://favors_game@kt-dev.ca05z1awppqr.us-east-1.rds.amaz
 engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
+def create_game(data):
+    sql = "INSERT INTO games (name) VALUES ('the name of a game');"
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        print(result)
+        return result
+
 def get_players():
     sql = 'SELECT * FROM players;'
 
