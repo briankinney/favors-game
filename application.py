@@ -37,7 +37,7 @@ def post_create_game():
     print('data is:', data)
     db_result = create_game(data)
     print("db result is ", db_result)
-    return redirect(url_for('join_game', id=db_result))
+    return redirect(url_for('join_game', game_id=db_result))
 
 
 @app.route("/game/<id>/join", methods=['GET'])
@@ -45,8 +45,8 @@ def render_game_join(id):
     return render_template('join.html', page_title="Join game")
 
 
-@app.route("/game/<id>/join", methods=['POST'])
-def join_game(id):
+@app.route("/game/<game_id>/join", methods=['POST'])
+def join_game(game_id):
     pass
 
 

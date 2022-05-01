@@ -6,12 +6,13 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
 def create_game(data):
-    sql = "INSERT INTO games (name) VALUES ('{name}');".format(name=data['name'])
+    sql = "INSERT INTO games (name) VALUES ('{name}') RETURNING ID;".format(name=data['name'])
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
-        print(result)
-        return result
+        inserted_id = result.fetchall()[0]['id']
+        print(inserted_id)
+        return inserted_id
 
 def get_players():
     sql = 'SELECT * FROM players;'
