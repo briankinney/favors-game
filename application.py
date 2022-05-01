@@ -16,6 +16,7 @@ from io import BytesIO
 from application.metabase.embed_link import get_dashboard_embed
 
 app = Flask(__name__)
+SESSION_TYPE = "filesystem"
 app.config['TESTING'] = True
 
 Session(app)
@@ -61,7 +62,7 @@ def join_game(game_id):
 
 @app.route("/game/<game_id>/play", methods=['GET'])
 def render_game_play(game_id):
-    players = get_players()
+    players = get_players(game_id)
     favors = get_favors()
     my_favors = get_my_favors(user_id=session["user_id"])
     return render_template('play.html', page_title="The Favors Game™",
@@ -76,9 +77,21 @@ def render_game_report(id):
     return render_template('report.html', page_title=f"Game {id} results", embedUrl=dashboardUrl)
 
 
-@app.route("/game/<id>/exchange/create", methods=['POST'])
-def exchange_favor(id):
-    pass
+@app.route("/game/<game_id>/exchange/create", methods=['POST'])
+def exchange_favor(game_id):
+    formdata = request.form
+    giver_id = formdata["giver"]
+    receiver_id = formdata["receiver"]
+    favor_id = formdata["favor_id"]
+    exchange_id = create_exchange_object(game_id, favor_id, giver_id, receiver_id)
+    return redirect(f"/game/{game_id}/play")
+
+
+@app.route("/game/<game_id>/exchange/<exchange_id>", methods=['PUT'])
+def verify_exchange(game_id, exchange_id):
+    receiver_id = session["user_id"]
+    verify_exchange_completion(exchange_id, receiver_id, game_id)
+    return redirect(f"/game/{game_id}/play")
 
 
 # Necessary to run app if app.py is executed as a script
