@@ -44,7 +44,7 @@ def get_my_favors(user_id):
                     from exchanges e join favors f on f.id = e.favor_id
                                      join players p on e.giving_player = p.id
                                      join players pr on e.receiving_player = pr.id
-                    WHERE me = :user_id""")
+                    WHERE p.id = :user_id""")
 
     with engine.connect() as conn:
         result = conn.execute(text(sql), user_id=user_id)
