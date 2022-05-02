@@ -22,8 +22,8 @@ def get_players(game_id):
 
     with engine.connect() as conn:
         result = conn.execute(sql, game_id=game_id)
-        print(result)
-        return result
+        data = [dict(row) for row in result]
+        return data
 
 
 def get_favors():
@@ -31,8 +31,8 @@ def get_favors():
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
-        print(result)
-        return result
+        data = [dict(row) for row in result]
+        return data
 
 
 def get_my_favors(user_id):
@@ -76,6 +76,8 @@ def verify_exchange_completion(exchange_id, player_id, game_id):
 
 
 def create_player(form_data, game_id):
+    sql = "SELECT * FROM players WHERE name LIKE '{name}' AND game_id = {game_id}'"
+
     sql = "INSERT INTO players (name, game_id) VALUES ('{name}', {game_id}) RETURNING ID;".format(
         name=form_data['name'],
         game_id=game_id
