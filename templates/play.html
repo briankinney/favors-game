@@ -35,7 +35,11 @@
                         <label for="giver_id">I am: </label>
                         <select class="form-control" id="giver_id" name="giver_id">
                             {% for sender in players %}
-                            <option value="{{ sender['id'] }}">{{ sender["name"] }}</option>
+                                {% if session['id'] == sender['id'] %}
+                                <option value="{{ sender['id'] }}" selected>{{ sender["name"] }}</option>
+                                {% else %}
+                                <option value="{{ sender['id'] }}">{{ sender["name"] }}</option>
+                                {% endif %}}
                             {% endfor %}
                         </select>
                     </div>
