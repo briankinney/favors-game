@@ -47,7 +47,7 @@ def get_my_favors(user_id):
                     WHERE p.id = :user_id""")
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql), user_id=user_id)
+        result = conn.execute(sql, user_id=user_id)
         data = [dict(row) for row in result]
         return data
 
