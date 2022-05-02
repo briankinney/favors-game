@@ -40,8 +40,8 @@ def get_my_favors(user_id):
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
-        print(result)
-        return result
+        data = [dict(row) for row in result]
+        return data
 
 
 def get_game_data(game_id):
