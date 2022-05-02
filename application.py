@@ -83,7 +83,7 @@ def render_game_report(id):
 @app.route("/game/<game_id>/exchange/create", methods=['POST'])
 def exchange_favor(game_id):
     formdata = request.form
-    giver_id = formdata["giver"]
+    giver_id = session["id"]
     receiver_id = formdata["receiver"]
     favor_id = formdata["favor_id"]
     boost_value = formdata["boost_value"]
