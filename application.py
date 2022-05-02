@@ -69,6 +69,7 @@ def render_game_play(game_id):
 
     my_favors = get_my_favors(user_id=session["id"])
     return render_template('play.html', page_title="The Favors Game™",
+                           game_id=game_id,
                            players=players,
                            favors=favors,
                            my_favors=my_favors)
@@ -87,7 +88,7 @@ def exchange_favor(game_id):
     receiver_id = formdata["receiver"]
     favor_id = formdata["favor_id"]
     boost_value = formdata["boost_value"]
-    exchange_id = create_exchange_object(game_id, favor_id, giver_id, receiver_id)
+    exchange_id = create_exchange_object(game_id, favor_id, giver_id, receiver_id, boost_value)
     return redirect(f"/game/{game_id}/play")
 
 

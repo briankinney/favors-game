@@ -36,10 +36,18 @@ def get_favors():
 
 
 def get_my_favors(user_id):
-    sql = 'SELECT * FROM exchanges WHERE giving_player = {user_id}'.format(user_id=user_id)
+    sql = text("""SELECT p.name as me,
+                           pr.name as receiver,
+                           f.name as favor_name,
+                           f.cost as favor_cost,
+                           f.jollies as favor_jollies
+                    from exchanges e join favors f on f.id = e.favor_id
+                                     join players p on e.giving_player = p.id
+                                     join players pr on e.receiving_player = pr.id
+                    WHERE p.id = :user_id""")
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(text(sql), user_id=user_id)
         data = [dict(row) for row in result]
         return data
 
@@ -53,12 +61,12 @@ def get_game_data(game_id):
         return game_data
 
 
-def create_exchange_object(game_id, favor_id, giver_id, receiver_id):
-    sql = text("""INSERT INTO exchanges (game_id, favor_id, giving_player, receiving_player)
-                  VALUES (:gid, :fid, :gvid, :rid) RETURNING id""")
+def create_exchange_object(game_id, favor_id, giver_id, receiver_id, boost_value):
+    sql = text("""INSERT INTO exchanges (game_id, favor_id, giving_player, receiving_player, boost_value)
+                  VALUES (:gid, :fid, :gvid, :rid, :b) RETURNING id""")
 
     with engine.connect() as conn:
-        result = conn.execute(sql, gid=game_id, fid=favor_id, gvid=giver_id, rid=receiver_id)
+        result = conn.execute(sql, gid=game_id, fid=favor_id, gvid=giver_id, rid=receiver_id, b=boost_value)
         assert result.rowcount == 1
         row = result.fetchone()
         return row['id']
