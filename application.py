@@ -93,7 +93,9 @@ def exchange_favor(game_id):
 @app.route("/game/<game_id>/exchange/<exchange_id>", methods=['PUT'])
 def verify_exchange(game_id, exchange_id):
     receiver_id = session["user_id"]
-    verify_exchange_completion(exchange_id, receiver_id, game_id)
+    formdata = request.form
+    boost_value = formdata["boost_value"]
+    verify_exchange_completion(exchange_id, receiver_id, game_id, boost_value)
     return redirect(f"/game/{game_id}/play")
 
 

@@ -1,0 +1,1 @@
+ALTER TABLE exchanges ADD COLUMN boost_value int

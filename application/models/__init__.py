@@ -64,11 +64,11 @@ def create_exchange_object(game_id, favor_id, giver_id, receiver_id):
         return row['id']
 
 
-def verify_exchange_completion(exchange_id, player_id, game_id):
-    sql = text("""UPDATE exchanges SET verified = true WHERE id = :id AND receiver_id = :rid AND game_id = :gid RETURNING id""")
+def verify_exchange_completion(exchange_id, player_id, game_id, boost_value):
+    sql = text("""UPDATE exchanges SET verified = true, boost_value = :b WHERE id = :id AND receiver_id = :rid AND game_id = :gid RETURNING id""")
 
     with engine.connect() as conn:
-        result = conn.execute(sql, id=exchange_id, rid=player_id, gid=game_id)
+        result = conn.execute(sql, id=exchange_id, rid=player_id, gid=game_id, b=boost_value)
         if result.rowcount == 0:
             raise Exception(f"Unable to update exchange {exchange_id}. Was it received by player {player_id}?")
         elif result.rowcount != 1:
