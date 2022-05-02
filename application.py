@@ -69,6 +69,7 @@ def render_game_play(game_id):
 
     my_favors = get_my_favors(user_id=session["id"])
     return render_template('play.html', page_title="The Favors Game™",
+                           game_id=game_id,
                            players=players,
                            favors=favors,
                            my_favors=my_favors)

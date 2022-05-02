@@ -1,12 +1,15 @@
+{% extends "master.html" %}
+{% block body %}
+
 <div class="row">
     <div class="col">
     </div>
-    <div class="col p-3">
+    <div class="col-8 p-3">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Exchange a favor:</h5>
                 <form action="/game/{{ game_id }}/exchange/create" method="post">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="sender_name">I am: </label>
                         <select class="form-control" id="sender_name" name="sender_name">
                             {% for sender in players %}
@@ -14,25 +17,25 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="favor">giving favor: </label>
-                        <select class="form-control" id="favor" name="favor">
+                    <div class="mb-3">
+                        <label for="favor_id">giving favor: </label>
+                        <select class="form-control" id="favor_id" name="favor_id">
                             {% for favor in favors %}
                             <option value="{{ favor['id'] }}">{{ favor['name'] }}: {{ favor['description'] }} (cost: {{ favor['cost'] }})</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="recipient">to: </label>
-                        <select class="form-control" id="recipient" name="recipient">
-                            {% for recipient in players %}
-                            <option value="{{ recipient['id'] }}">{{ recipient["name"] }}</option>
+                    <div class="mb-3">
+                        <label for="receiver">to: </label>
+                        <select class="form-control" id="receiver" name="receiver">
+                            {% for receiver in players %}
+                            <option value="{{ receiver['id'] }}">{{ receiver["name"] }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="2" id="boost" name="boost">
-                        <label class="form-check-label" for="boost">
+                    <div class="mb-3">
+                        <input class="form-check-input" type="checkbox" value="2" id="boost_value" name="boost_value">
+                        <label class="form-check-label" for="boost_value">
                             Boost this favor (ask the recipient!)
                         </label>
                     </div>
@@ -45,14 +48,18 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-1">
+    <div class="col">
     </div>
     <div class="col">
         <h5>Previous favors:</h5>
         <ul>
-
+            {% for favor in my_favors %}
+            <li>{{ favor }}</li>
+            {% endfor %}
         </ul>
     </div>
     <div class="col-1">
     </div>
 </div>
+
+{% endblock %}
