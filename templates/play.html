@@ -93,7 +93,7 @@
         <h5>Previous favors:</h5>
         <ul>
             {% for favor in my_favors %}
-            <li>{{ favor["me"] }} gave {{ favor["receiver"] }}: {{ favor["favor_name"] }} and earned {{ favor["favor_jollies"] }} (cost: {{ favor["favor_cost"] }})</li>
+            <li>{{ favor["me"] }} gave {{ favor["receiver"] }}: {{ favor["favor_name"] }} and earned {{ favor["favor_jollies"] }} jollies (cost: {{ favor["favor_cost"] }})</li>
             {% endfor %}
         </ul>
     </div>
