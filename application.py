@@ -84,7 +84,12 @@ def render_game_report(id):
 @app.route("/game/<game_id>/exchange/create", methods=['POST'])
 def exchange_favor(game_id):
     formdata = request.form
-    giver_id = session["id"]
+    try:
+        giver_id = formdata["giver_id"]
+    except:
+        giver_id = session["id"]
+    if giver_id is None:
+        giver_id = session["id"]
     receiver_id = formdata["receiver"]
     favor_id = formdata["favor_id"]
     if "boost_value" not in formdata:
