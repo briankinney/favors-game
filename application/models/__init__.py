@@ -53,12 +53,12 @@ def get_game_data(game_id):
         return game_data
 
 
-def create_exchange_object(game_id, favor_id, giver_id, receiver_id):
-    sql = text("""INSERT INTO exchanges (game_id, favor_id, giving_player, receiving_player)
-                  VALUES (:gid, :fid, :gvid, :rid) RETURNING id""")
+def create_exchange_object(game_id, favor_id, giver_id, receiver_id, boost_value):
+    sql = text("""INSERT INTO exchanges (game_id, favor_id, giving_player, receiving_player, boost_value)
+                  VALUES (:gid, :fid, :gvid, :rid, :b) RETURNING id""")
 
     with engine.connect() as conn:
-        result = conn.execute(sql, gid=game_id, fid=favor_id, gvid=giver_id, rid=receiver_id)
+        result = conn.execute(sql, gid=game_id, fid=favor_id, gvid=giver_id, rid=receiver_id, b=boost_value)
         assert result.rowcount == 1
         row = result.fetchone()
         return row['id']
