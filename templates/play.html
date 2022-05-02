@@ -87,13 +87,13 @@
     </ul>
 </div>
 <div class="row">
-    <div class="col">
+    <div class="col-1">
     </div>
     <div class="col">
         <h5>Previous favors:</h5>
         <ul>
             {% for favor in my_favors %}
-            <li>{{ favor }}</li>
+            <li>{{ favor["me"] }} gave {{ favor["receiver"] }}: {{ favor["favor_name"] }} and earned {{ favor["favor_jollies"] }} (cost: {{ favor["favor_cost"] }})</li>
             {% endfor %}
         </ul>
     </div>
