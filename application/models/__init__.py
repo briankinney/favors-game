@@ -36,15 +36,18 @@ def get_favors():
 
 
 def get_my_favors(user_id):
-    sql = text("""SELECT p.name as me,
-                           pr.name as receiver,
-                           f.name as favor_name,
-                           f.cost as favor_cost,
-                           f.jollies as favor_jollies
+    sql = text("""SELECT e.id, 
+                        p.name as me,
+                        pr.name as receiver,
+                        f.name as favor_name,
+                        f.cost as favor_cost,
+                        f.jollies as favor_jollies,
+                        e.boost_value as boost_value
                     from exchanges e join favors f on f.id = e.favor_id
                                      join players p on e.giving_player = p.id
                                      join players pr on e.receiving_player = pr.id
-                    WHERE p.id = :user_id""")
+                    WHERE p.id = :user_id
+                    ORDER by 1""")
 
     with engine.connect() as conn:
         result = conn.execute(sql, user_id=user_id)
