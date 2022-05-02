@@ -76,10 +76,20 @@ def verify_exchange_completion(exchange_id, player_id, game_id, boost_value):
 
 
 def create_player(form_data, game_id):
-    sql = "SELECT * FROM players WHERE name LIKE '{name}' AND game_id = {game_id}'"
+    name = form_data['name']
+    sql = f"SELECT * FROM players WHERE name LIKE '{name}' AND game_id = {game_id};"
+
+    with engine.connect() as conn:
+        cursor = conn.execute(text(sql))
+        results = cursor.fetchall()
+        if len(results) > 0:
+            print(f"the player name {name} already exists in game {game_id}")
+            user_id = results[0]['id']
+            return user_id
+
 
     sql = "INSERT INTO players (name, game_id) VALUES ('{name}', {game_id}) RETURNING ID;".format(
-        name=form_data['name'],
+        name=name,
         game_id=game_id
     )
 
