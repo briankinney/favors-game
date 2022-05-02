@@ -87,7 +87,10 @@ def exchange_favor(game_id):
     giver_id = session["id"]
     receiver_id = formdata["receiver"]
     favor_id = formdata["favor_id"]
-    boost_value = formdata["boost_value"]
+    if "boost_value" not in formdata:
+        boost_value = 1
+    else:
+        boost_value = formdata["boost_value"]
     exchange_id = create_exchange_object(game_id, favor_id, giver_id, receiver_id, boost_value)
     return redirect(f"/game/{game_id}/play")
 
