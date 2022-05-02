@@ -32,8 +32,8 @@
                 <h5 class="card-title">Exchange a favor:</h5>
                 <form action="/game/{{ game_id }}/exchange/create" method="post">
                     <div class="mb-3">
-                        <label for="sender_name">I am: </label>
-                        <select class="form-control" id="sender_name" name="sender_name">
+                        <label for="giver_id">I am: </label>
+                        <select class="form-control" id="giver_id" name="giver_id">
                             {% for sender in players %}
                             <option value="{{ sender['id'] }}">{{ sender["name"] }}</option>
                             {% endfor %}
