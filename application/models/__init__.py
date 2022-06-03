@@ -35,6 +35,15 @@ def get_favors():
         return data
 
 
+def get_favor(id):
+    sql = 'SELECT * FROM favors WHERE id = {favor_id}'.format(favor_id=id)
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result]
+        return data
+
+
 def get_my_favors(user_id):
     sql = text("""SELECT e.id, 
                         p.name as me,

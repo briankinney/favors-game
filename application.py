@@ -108,6 +108,36 @@ def verify_exchange(game_id, exchange_id):
     verify_exchange_completion(exchange_id, receiver_id, game_id, boost_value)
     return redirect(f"/game/{game_id}/play")
 
+@app.route("/favors", methods=['GET'])
+def favors():
+    favors = get_favors()
+    return render_template('favors.html', page_title="Favors",
+                           favors=favors)
+
+@app.route("/favors/add_favor", methods=['POST'], defaults={'game_id':None})
+@app.route("/favors/add_favor/<game_id>", methods=['POST'])
+def add_favor(game_id=None):
+
+    return redirect(url_for('render_add_favor', game_id=game_id))
+
+
+
+@app.route("/favors/add_favor/create", methods=['GET'])
+def render_add_favor(game_id=None):
+    return render_template('add_favor.html', page_title="Favors",
+                           game_id=game_id)
+
+@app.route("/favors/<id>/edit_favor", methods=['POST'])
+def edit_favor(id):
+
+    return redirect(url_for('render_edit_favor', id=id))
+
+
+@app.route("/favors/<id>/edit_favor/edit", methods=['GET'])
+def render_edit_favor(id):
+    favor = get_favor(id)
+    return render_template('edit_favor.html', favor=favor)
+
 
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":

@@ -1,0 +1,31 @@
+{% extends "master.html" %}
+{% block body %}
+
+<div class="row">
+  <div class="col">
+  </div>
+  <div class="col p-3">
+    <div class="card-body">
+      <h5 class="card-title">Add a New Favor </h5>
+      <form action="/favors/add_favor" method="post">
+        <div class="mb-3">
+          <label for="name" class="form-label"> Enter the Favor name</label>
+          <input class="form-control" id="name" name="name" aria-describedby="name">
+          <label for="description" class="form-label"> Enter the Favor description</label>
+          <input class="form-control" id="description" name="description" aria-describedby="description">
+          <label for="jollies" class="form-label"> Enter the Favor jollies</label>
+          <input class="form-control" id="jollies" name="jollies" aria-describedby="jollies">
+          <label for="cost" class="form-label"> Enter the Favor cost</label>
+          <input class="form-control" id="cost" name="cost" aria-describedby="cost">
+          <label for="type" class="form-label"> Enter the Favor type</label>
+          <input class="form-control" id="type" name="type" aria-describedby="type">
+        </div>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
