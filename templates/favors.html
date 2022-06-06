@@ -7,9 +7,8 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Favors</h5>
-                <form action="{{url_for('add_favor')}}" method="post">
                     <div class="col p-3">
-                        <button type="submit" class="btn btn-primary" >Add Favor</button>
+                        <a href="/favors/add_favor" class="btn btn-primary">Add Favor</a>
                         <div class="mb-3">
                             <ul id="favorsUL">
                                 {% for favor in favors %}
@@ -18,15 +17,12 @@
                                     Jollies: {{ favor["jollies"] }},
                                     Cost: {{ favor["cost"] }},
                                     Type: {{ favor["type"] }}
-                                    <form action="/favors/{{ favor['id'] }}/edit_favor" method="post">
-                                    <button type="submit" class="btn btn-primary">Edit Favor</button>
-                                    </form>
+                                    <a href="/favors/{{ favor['id'] }}/edit_favor">Edit Favor: {{favor["name"]}}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
 </div>

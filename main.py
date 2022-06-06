@@ -114,31 +114,43 @@ def favors():
     return render_template('favors.html', page_title="Favors",
                            favors=favors)
 
-@app.route("/favors/add_favor", methods=['POST'], defaults={'game_id':None})
-@app.route("/favors/add_favor/<game_id>", methods=['POST'])
+@app.route("/favors/add_favor", methods=['GET'], defaults={'game_id':None})
+@app.route("/favors/add_favor/<game_id>", methods=['GET'])
 def add_favor(game_id=None):
-
-    return redirect(url_for('render_add_favor', game_id=game_id))
-
-
-
-@app.route("/favors/add_favor/create", methods=['GET'])
-def render_add_favor(game_id=None):
+    favor_types = get_favor_types()
     return render_template('add_favor.html', page_title="Favors",
-                           game_id=game_id)
+                           game_id=game_id, favor_types=favor_types)
 
-@app.route("/favors/<id>/edit_favor", methods=['POST'])
+@app.route("/favors/add_favor/", methods=['POST'], defaults={'game_id':None})
+@app.route("/favors/add_favor/<game_id>", methods=['POST'])
+def post_add_favor(game_id=None):
+    data = request.form
+    print('data is:', data)
+    db_result = create_favor(data)
+    print("db result is ", db_result)
+
+    if game_id:
+        return redirect(url_for('render_game_play', game_id=game_id))
+    else:
+        return redirect(url_for('favors'))
+
+
+@app.route("/favors/<id>/edit_favor", methods=['GET'])
 def edit_favor(id):
-
-    return redirect(url_for('render_edit_favor', id=id))
-
-
-@app.route("/favors/<id>/edit_favor/edit", methods=['GET'])
-def render_edit_favor(id):
     favor = get_favor(id)
-    return render_template('edit_favor.html', favor=favor)
+    favor = favor[0]
+    favor_types = get_favor_types()
+    return render_template('edit_favor.html', favor=favor, favor_types=favor_types)
 
+@app.route("/favors/<id>/edit_favor", methods=['POST', 'PUT'])
+def put_edit_favor(id):
+    data = request.form
+    print('data is', data)
+    update_edited_favor(data, id)
+    favors = get_favors()
 
+    return render_template('favors.html', page_title="Favors",
+                           favors=favors)
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

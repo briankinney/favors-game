@@ -16,6 +16,18 @@ def create_game(data):
         print(inserted_id)
         return inserted_id
 
+def create_favor(data):
+    sql = "INSERT INTO favors (name, description, jollies, cost, type)" \
+          " VALUES ('{name}', '{description}', '{jollies}', '{cost}', '{type}') RETURNING ID" \
+          ";".format(name=data['name'], description=data['description'], jollies=data['jollies'], cost=data['cost'],
+                     type=data['type'])
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        inserted_id = result.fetchall()[0]['id']
+        print(inserted_id)
+        return inserted_id
+
 
 def get_players(game_id):
     sql = text("SELECT * FROM players WHERE game_id = :game_id;")
@@ -63,7 +75,22 @@ def get_my_favors(user_id):
         data = [dict(row) for row in result]
         return data
 
+def get_favor_types():
+    sql = 'SELECT DISTINCT type from favors'
+    with engine.connect() as conn:
+        result = conn.execute(sql)
+        data = [dict(row) for row in result]
+        return data
 
+def update_edited_favor(data, favor_id):
+
+    sql = "UPDATE favors SET name = '{name}', description='{description}', jollies= {jollies}, " \
+          "cost= {cost}, type='{type}' WHERE id= {favor_id}".format(name=data['name'], description=data['description'],
+                                                                    jollies=int(data['jollies']),cost=int(data['cost']),
+                                                                    type=data['type'], favor_id=int(favor_id))
+
+    with engine.connect() as conn:
+        result = conn.execute(sql)
 def get_game_data(game_id):
     sql = 'SELECT * FROM games WHERE id = {game_id}'.format(game_id=game_id)
 
