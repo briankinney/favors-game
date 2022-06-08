@@ -8,22 +8,21 @@ engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
 def create_game(data):
-    sql = "INSERT INTO games (name) VALUES ('{name}') RETURNING ID;".format(name=data['name'])
+    sql = text("INSERT INTO games (name) VALUES (:name) RETURNING ID;")
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, name=data['name'])
         inserted_id = result.fetchall()[0]['id']
         print(inserted_id)
         return inserted_id
 
 def create_favor(data):
-    sql = "INSERT INTO favors (name, description, jollies, cost, type)" \
-          " VALUES ('{name}', '{description}', '{jollies}', '{cost}', '{type}') RETURNING ID" \
-          ";".format(name=data['name'], description=data['description'], jollies=data['jollies'], cost=data['cost'],
-                     type=data['type'])
+    sql = text("""INSERT INTO favors (name, description, jollies, cost, type) VALUES (:name, 
+    :description, :jollies, :cost, :type) RETURNING ID;""")
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, name=data['name'], description=data['description'], jollies=data['jollies'],
+                              cost=data['cost'],type=data['type'])
         inserted_id = result.fetchall()[0]['id']
         print(inserted_id)
         return inserted_id
@@ -48,10 +47,10 @@ def get_favors():
 
 
 def get_favor(id):
-    sql = 'SELECT * FROM favors WHERE id = {favor_id}'.format(favor_id=id)
+    sql = text('SELECT * FROM favors WHERE id = :favor_id')
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, favor_id=id)
         data = [dict(row) for row in result]
         return data
 
@@ -84,18 +83,20 @@ def get_favor_types():
 
 def update_edited_favor(data, favor_id):
 
-    sql = "UPDATE favors SET name = '{name}', description='{description}', jollies= {jollies}, " \
-          "cost= {cost}, type='{type}' WHERE id= {favor_id}".format(name=data['name'], description=data['description'],
-                                                                    jollies=int(data['jollies']),cost=int(data['cost']),
-                                                                    type=data['type'], favor_id=int(favor_id))
+    sql = text("""UPDATE favors SET name = :name, description= :description, jollies= :jollies, cost= :cost,
+                      type= :type WHERE id= :favor_id;""")
 
     with engine.connect() as conn:
-        result = conn.execute(sql)
+        result = conn.execute(sql, name=data['name'], description=data['description'],
+                              jollies=int(data['jollies']), cost=int(data['cost']), type=data['type'], favor_id=favor_id)
+
+
+
 def get_game_data(game_id):
-    sql = 'SELECT * FROM games WHERE id = {game_id}'.format(game_id=game_id)
+    sql = text('SELECT * FROM games WHERE id = :game_id')
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, game_id=game_id)
         game_data = [dict(row) for row in result][0]
         return game_data
 
@@ -124,33 +125,29 @@ def verify_exchange_completion(exchange_id, player_id, game_id, boost_value):
 
 def create_player(form_data, game_id):
     name = form_data['name']
-    sql = f"SELECT * FROM players WHERE name LIKE '{name}' AND game_id = {game_id};"
+    sql = text("SELECT * FROM players WHERE name LIKE :name AND game_id = :game_id;")
 
     with engine.connect() as conn:
-        cursor = conn.execute(text(sql))
+        cursor = conn.execute(sql, name=name, game_id=game_id)
         results = cursor.fetchall()
         if len(results) > 0:
             print(f"the player name {name} already exists in game {game_id}")
             user_id = results[0]['id']
             return user_id
 
-
-    sql = "INSERT INTO players (name, game_id) VALUES ('{name}', {game_id}) RETURNING ID;".format(
-        name=name,
-        game_id=game_id
-    )
+    sql = text("INSERT INTO players (name, game_id) VALUES (:name, :game_id) RETURNING ID;")
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, name=name, game_id=game_id)
         inserted_id = result.fetchall()[0]['id']
         print(inserted_id)
         return inserted_id
 
 
 def get_player_data(player_id):
-    sql = 'SELECT * FROM players WHERE id = {player_id}'.format(player_id=player_id)
+    sql = text('SELECT * FROM players WHERE id = :player_id')
 
     with engine.connect() as conn:
-        result = conn.execute(text(sql))
+        result = conn.execute(sql, player_id=player_id)
         data = [dict(row) for row in result][0]
         return data

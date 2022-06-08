@@ -142,7 +142,7 @@ def edit_favor(id):
     favor_types = get_favor_types()
     return render_template('edit_favor.html', favor=favor, favor_types=favor_types)
 
-@app.route("/favors/<id>/edit_favor", methods=['POST', 'PUT'])
+@app.route("/favors/<id>/edit_favor", methods=['POST'])
 def put_edit_favor(id):
     data = request.form
     print('data is', data)
