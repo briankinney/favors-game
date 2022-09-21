@@ -16,8 +16,33 @@ def get_bar_chart(): # Brett!
 
 
 def get_leaderboard(): # YiJun!
-    pass 
+    pass
 
 
 def get_favor_list(name="my name"): # Lu
-    pass
+    data = [
+        {"giver": "foo",
+         "receiver": "bar",
+         "favor": "Compliments",
+         "boosted": True,
+         "points": 10},
+        {"giver": "foo",
+         "receiver": "bar",
+         "favor": "Compliments",
+         "boosted": True,
+         "points": 10},
+        {"giver": "foo",
+         "receiver": "bar",
+         "favor": "Compliments",
+         "boosted": True,
+         "points": 10}
+    ]
+
+    dataframe = pd.DataFrame(data)
+    html = dataframe.to_html()
+
+    filename = "./static/my_favors.html"
+    with open(filename, 'w') as fp:
+        fp.write(html)
+
+    return filename
