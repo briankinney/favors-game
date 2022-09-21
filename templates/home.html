@@ -2,13 +2,16 @@
 {% block body %}
 
 <div class="row">
+    <div class="col-6">
     <h1>Home Page</h1>
 
     <p>Here is a visualization. This is created by sending a png output file that Python created as part of the
         application code. Then, that asset is sent to the front end as an image file.</p>
 
-    <img src="{{visualization}}">
+    <img src="{{visualization}}" width="400" >
 
+    </div>
+    <div class="col-6">
     <p>Here is a form submit that gathers some input from the user.</p>
     <form action="/" method="post">
         <label for="userInput" class="form-label">Enter some text:</label>
@@ -25,6 +28,7 @@
     <p> What do you think the  backend did with the user input? </p>
 
     <p> This is the building block of interactive web applications.</p>
+    </div>
 </div>
 
 {% endblock %}
