@@ -1,17 +1,10 @@
 # !/usr/bin/env python3
 
-import os
-import json
 from application.models import *
-import datetime
-import zipfile
-import random
-import sys
-
+from application.visualizations.local_data_charts import *
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session
-from configparser import ConfigParser
-from io import BytesIO
+
 
 from application.metabase.embed_link import get_dashboard_embed
 
@@ -23,8 +16,18 @@ Session(app)
 
 # Route to homepage
 @app.route("/", methods=['GET'])
+def render_home():
+    user_input = request.args.get("userInput")
+    print(user_input)
+    visualization = get_chart_src(title=user_input)
+    return render_template('home.html',
+                           visualization=visualization,
+                           **request.args)
+
+
+@app.route("/", methods=['POST'])
 def render_index():
-    return render_template('home.html', page_title="Home")
+    return redirect(url_for('render_home', **request.form))
 
 
 @app.route("/game/create", methods=['GET'])
