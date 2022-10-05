@@ -1,6 +1,7 @@
 # project specific
 flask_session
 flask_session/*
+*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
