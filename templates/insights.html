@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+<head>
+    <title>Leaderboard</title>
+</head>
+
+{% block body %}
+
+    <p>The game is active! Here is a summary of the game</p>
+
+    A table of exchanges
+    {{ favors_table|safe }}
+
+    <br>
+    <img src="{{ leaderboard_src }}" alt="a leaderboard table">
+
+    <br><br>
+    What else?
+    {{ tbd }}
+
+{% endblock %}

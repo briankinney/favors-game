@@ -11,15 +11,15 @@ def get_chart_src(title=""):
     return filename
 
 
-def get_bar_chart(): # Brett!
+def get_bar_chart_src(): # Brett!
     pass
 
 
-def get_leaderboard(): # YiJun!
+def get_leaderboard_src(): # YiJun!
     pass
 
 
-def get_favor_list(name="my name"): # Lu
+def get_favors_table(name="my name"): # Lu
     data = [
         {"giver": "foo",
          "receiver": "bar",
@@ -41,8 +41,4 @@ def get_favor_list(name="my name"): # Lu
     dataframe = pd.DataFrame(data)
     html = dataframe.to_html()
 
-    filename = "./static/my_favors.html"
-    with open(filename, 'w') as fp:
-        fp.write(html)
-
-    return filename
+    return html
