@@ -12,7 +12,12 @@ def get_chart_src(title=""):
 
 
 def get_bar_chart_src(): # Brett!
-    pass
+    data = get_favors_table(name="Brian")
+    fig, ax = plt.subplots()
+    ax.bar(data["giver"], height=data["points"])
+    filename = "./static/bar-chart.png"
+    fig.savefig(filename)
+    return "/static/bar-chart.png"
 
 
 def get_leaderboard_src(): # YiJun!
@@ -21,24 +26,25 @@ def get_leaderboard_src(): # YiJun!
 
 def get_favors_table(name="my name"): # Lu
     data = [
+        {"giver": "baz",
+         "receiver": "bar",
+         "favor": "Compliments",
+         "boosted": True,
+         "points": 5},
         {"giver": "foo",
          "receiver": "bar",
          "favor": "Compliments",
          "boosted": True,
          "points": 10},
-        {"giver": "foo",
+        {"giver": "bing",
          "receiver": "bar",
          "favor": "Compliments",
          "boosted": True,
-         "points": 10},
-        {"giver": "foo",
-         "receiver": "bar",
-         "favor": "Compliments",
-         "boosted": True,
-         "points": 10}
+         "points": 15}
     ]
 
     dataframe = pd.DataFrame(data)
+    return dataframe
     html = dataframe.to_html()
 
     return html

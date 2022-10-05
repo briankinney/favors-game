@@ -161,6 +161,10 @@ def render_edit_favor(id):
     return render_template('edit_favor.html', favor=favor)
 
 
+@app.route("/testing/bar-chart")
+def render_bar_chart_test():
+    return render_template("home.html", visualization=get_bar_chart_src())
+
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
     app.run(debug=True, host='localhost')
