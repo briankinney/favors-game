@@ -130,3 +130,20 @@ def get_player_data(player_id):
         result = conn.execute(text(sql))
         data = [dict(row) for row in result][0]
         return data
+
+
+def get_exchanges_game_29():
+    sql = """SELECT giver.name as giver,
+       receiver.name as receiver,
+       f.name as favor,
+       boost_value as boosted,
+       f.jollies as points
+    FROM exchanges join players giver on exchanges.giving_player = giver.id
+                        join players receiver on exchanges.receiving_player = receiver.id
+                         join favors f on exchanges.favor_id = f.id
+    WHERE exchanges.game_id = 29;"""
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result]
+        return data
