@@ -1,9 +1,12 @@
+import dotenv
+dotenv.load_dotenv()
+
 import sqlalchemy
 from sqlalchemy import text
 
 from os import environ
 
-DATABASE_URL = f"postgresql://favors_game:{environ['DB_PASSWORD']}@kt-dev.ca05z1awppqr.us-east-1.rds.amazonaws.com:5432/favors_game"
+DATABASE_URL = f"postgresql://{environ['DB_USERNAME']}:{environ['DB_PASSWORD']}@kt-dev.ca05z1awppqr.us-east-1.rds.amazonaws.com:5432/favors_game"
 engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
