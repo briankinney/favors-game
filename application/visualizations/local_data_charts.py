@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+import application.models
 
 def get_chart_src(title=""):
     s = pd.Series([1, 2, 3])
@@ -24,24 +25,9 @@ def get_leaderboard_src(): # YiJun!
 
 
 def get_favors_table(name="my name"): # Lu
-    data = [
-        {"giver": "foo",
-         "receiver": "bar",
-         "favor": "Compliments",
-         "boosted": True,
-         "points": 10},
-        {"giver": "foo",
-         "receiver": "bar",
-         "favor": "Compliments",
-         "boosted": True,
-         "points": 10},
-        {"giver": "foo",
-         "receiver": "bar",
-         "favor": "Compliments",
-         "boosted": True,
-         "points": 10}
-    ]
+    data = application.models.get_exchanges_game_29()
 
+    print(data)
     dataframe = pd.DataFrame(data)
     html = dataframe.to_html()
 

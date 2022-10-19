@@ -1,4 +1,5 @@
 # !/usr/bin/env python3
+import os
 
 from application.models import *
 from application.visualizations.local_data_charts import *
@@ -12,6 +13,8 @@ app.config['TESTING'] = True
 app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
+
+print(f"Debugging: running from {os.getcwd()}")
 
 #################### TEACHING ROUTES ###############################
 
