@@ -16,7 +16,11 @@ def get_bar_chart_src(): # Brett!
 
 
 def get_leaderboard_src(): # YiJun!
-    pass
+    # In this function, we must create a new file that contains the visualization you want to display.
+    # Return the path the newly-created file.
+
+    # For demonstration purposes, just put a random file in there.
+    return "/static/wii-music.png"
 
 
 def get_favors_table(name="my name"): # Lu
