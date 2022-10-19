@@ -5,12 +5,15 @@
 
 {% block body %}
 
-    <p>The game is active! Here is a summary of the game</p>
+    <p>Here is a summary of the game 29</p>
 
-    A table of exchanges
+    These favors have been exchanged
     {{ favors_table|safe }}
+    {# Typically, when text is passed to jinja, it is rendered as text. "Piping" the text in favors_table into safe
+    will convert the flat text into HTML that gets rendered in the browser. #}
 
     <br>
+    <p>Here is the leaderboard for the game</p>
     <img src="{{ leaderboard_src }}" alt="a leaderboard table">
 
     <br><br>
