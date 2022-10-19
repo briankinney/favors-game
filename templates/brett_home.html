@@ -1,0 +1,34 @@
+{% extends "master.html" %}
+{% block body %}
+
+<div class="row">
+    <div class="col-6">
+    <h1>Home Page</h1>
+
+    <p>Here is a super cool visualization. This is created by sending a png output file that Python created as part of the
+        application code. Then, that asset is sent to the front end as an image file.</p>
+
+    <img src="{{visualization}}" width="400" >
+
+    </div>
+    <div class="col-6">
+    <p>Here is a form submit that gathers some input from the user.</p>
+    <form action="/" method="post">
+        <label for="userInput" class="form-label">Enter some text:</label>
+        <input class="form-control" id="userInput" name="userInput">
+        <button class="submit">Send my input to the application</button>
+    </form>
+
+    <p>When you hit this button, this page is reloaded and the user input added to the URL above as part of the GET
+        request</p>
+
+    <p>Those parameters are sent to the backend application. The application can then do things with those parameters
+        (which are user input) and application data (which is typically stored in the database)
+        to create a new response for the user based on their input. </p>
+    <p> What do you think the  backend did with the user input? </p>
+
+    <p> This is the building block of interactive web applications.</p>
+    </div>
+</div>
+
+{% endblock %}
