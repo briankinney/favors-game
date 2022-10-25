@@ -136,4 +136,3 @@ dmypy.json
 
 # Intellij files
 .idea/*
-app.py
