@@ -32,12 +32,11 @@ def render_home():
 def render_insights():
     leaderboard_src = get_leaderboard_src()
     favors_table = get_favors_table()
-    most_jollies = chart_player_ranking_by_jollies()
     return render_template('insights.html',
                            leaderboard_src=leaderboard_src,
                            favors_table=favors_table,
-                           most_jollies=most_jollies,
                            **request.args)
+
 
 
 
@@ -165,7 +164,6 @@ def render_edit_favor(id):
     return render_template('edit_favor.html', favor=favor)
 
 
-# Necessary to run app if application.py is executed as a script
+# Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
-    app.run(debug=True, host='localhost', port=5002)
-    #app.run(host='0.0.0.0', port=5002)
+    app.run(debug=True, host='localhost')
