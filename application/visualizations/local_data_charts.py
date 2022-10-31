@@ -1,19 +1,34 @@
+import matplotlib
+matplotlib.use('Agg')
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
 import application.models
 
 def get_chart_src(title=""):
-    s = pd.Series([1, 2, 3])
-    fig, ax = plt.subplots()
-    s.plot.bar(title=title)
+    #s = pd.Series([1, 2, 3])
+    #fig, ax = plt.subplots()
+    #s.plot.bar(title=title)
     filename = './static/dataset1.png'
-    fig.savefig(filename)
+    #fig.savefig(filename)
     return filename
 
 
-def get_bar_chart_src(): # Brett!
-    pass
+def get_money_chart_src(title=""): # Brett!
+    filename = './static/money_chart.png'
+
+    players = application.models.get_players(29)
+    names = [d['name'] for d in players]
+    print('NAMES', names)
+    balances = [d['money'] if d['money'] is not None else 0 for d in players]
+    print('BALANCES', balances)
+
+    fig, ax = plt.subplots(figsize=(8, 3))
+    plt.bar(names, balances)
+    fig.savefig(filename)
+
+    return filename
 
 
 def get_leaderboard_src(): # YiJun!

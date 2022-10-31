@@ -32,9 +32,11 @@ def render_home():
 def render_insights():
     leaderboard_src = get_leaderboard_src()
     favors_table = get_favors_table()
+    money_chart = get_money_chart_src()
     return render_template('insights.html',
                            leaderboard_src=leaderboard_src,
                            favors_table=favors_table,
+                           money_chart=money_chart,
                            **request.args)
 
 
@@ -166,4 +168,4 @@ def render_edit_favor(id):
 
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
-    app.run(debug=True, host='localhost')
+    app.run(debug=True, host='localhost', port=5001)
