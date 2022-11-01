@@ -15,17 +15,31 @@ def get_chart_src(title=""):
     return filename
 
 
-def get_money_chart_src(title="", game_id=29): # Brett!
-    filename = './static/money_chart.png'
+def get_money_chart_src(title="Player Wealth Leaderboard", game_id=29): # Brett!
+    """
 
-    players = application.models.get_players(game_id)
-    names = [d['name'] for d in players]
-    print('NAMES', names)
-    balances = [d['money'] if d['money'] is not None else 0 for d in players]
-    print('BALANCES', balances)
+    :param title: the title that will be displayed in the resulting plot
+    :param game_id: the ID for the game whose leaderboard should be displayed
+    :return: returns the filename of the plot
+    """
 
+    filename = './static/money_chart_' + str(game_id) + '.png'
+
+    # Get the player wealth data and prepare it for plotting
+    players = application.models.get_players_money(game_id)
+    players_list = list(zip([p['money'] for p in players], [p['name'] for p in players]))
+    players_list.sort(reverse=True)
+
+    # Plot the chart
     fig, ax = plt.subplots(figsize=(8, 3))
-    plt.bar(names, balances)
+    plt.bar([p[1] for p in players_list], [p[0] for p in players_list])
+
+    # Decorate the figure
+    ax.set_title(title)
+    ax.set_xlabel('Player')
+    ax.set_ylabel('Dollars')
+
+    plt.gcf().subplots_adjust(bottom=0.15)
     fig.savefig(filename)
 
     return filename

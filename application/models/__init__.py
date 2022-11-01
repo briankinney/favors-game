@@ -147,3 +147,26 @@ def get_exchanges_game_29():
         result = conn.execute(text(sql))
         data = [dict(row) for row in result]
         return data
+
+
+def get_players_money(game_id):
+    sql = f"""
+    SELECT 
+        players.id AS player_id, 
+        players.name AS name,
+        COALESCE(players.money, 0) - SUM(favors.cost) AS money
+    FROM players
+        INNER JOIN exchanges ON exchanges.giving_player = players.id
+        INNER JOIN favors ON favors.id = exchanges.favor_id
+    WHERE exchanges.game_id = {game_id}
+    GROUP BY 
+        players.id,
+        players.name,
+        players.money
+    """
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        print('RESULT TYPE:', type(result))
+        data = [dict(row) for row in result]
+        return data
