@@ -15,10 +15,10 @@ def get_chart_src(title=""):
     return filename
 
 
-def get_money_chart_src(title=""): # Brett!
+def get_money_chart_src(title="", game_id=29): # Brett!
     filename = './static/money_chart.png'
 
-    players = application.models.get_players(29)
+    players = application.models.get_players(game_id)
     names = [d['name'] for d in players]
     print('NAMES', names)
     balances = [d['money'] if d['money'] is not None else 0 for d in players]
