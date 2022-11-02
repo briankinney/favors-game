@@ -45,6 +45,12 @@ def get_leaderboard_src(): # YiJun!
 
     return savefile
 
+def get awards_src():
+    ## in this function we determine who the winners of the various awards are
+
+    ## get complete transaction log
+    pass
+
 
 def get_favors_table(name="my name"): # Lu
     data = application.models.get_exchanges_game_29()

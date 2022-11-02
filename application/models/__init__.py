@@ -133,15 +133,21 @@ def get_player_data(player_id):
 
 
 def get_exchanges_game_29():
-    sql = """SELECT giver.name as giver,
-       receiver.name as receiver,
-       f.name as favor,
-       boost_value as boosted,
-       f.jollies as points
-    FROM exchanges join players giver on exchanges.giving_player = giver.id
-                        join players receiver on exchanges.receiving_player = receiver.id
-                         join favors f on exchanges.favor_id = f.id
-    WHERE exchanges.game_id = 29;"""
+    sql = """
+        SELECT
+            givers.name AS giver, receivers.name AS receiver,
+            favors.name AS favor, favors.type AS favor_type,
+            favor.jollies AS points, exchanges.boost_value
+        FROM
+            exchanges LEFT JOIN players givers
+                ON  givers.id = exchanges.giving_player
+            LEFT JOIN players receivers
+                ON  receivers.id = exchanges.receiving_player
+            LEFT JOIN favors
+                on  exchanges.favor_id = favors.id
+        WHERE
+            exchanges.game_id = 29  ;
+        """
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
