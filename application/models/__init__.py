@@ -135,6 +135,7 @@ def get_player_data(player_id):
 def get_exchanges_game_29():
     sql = """
         SELECT
+            exchanges.id AS exchange_id,
             givers.name AS giver, receivers.name AS receiver,
             favors.name AS favor, favors.type AS favor_type,
             favor.jollies AS points, exchanges.boost_value
