@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 import application.models
 
+
 def get_chart_src(title=""):
     #s = pd.Series([1, 2, 3])
     #fig, ax = plt.subplots()
@@ -17,7 +18,6 @@ def get_chart_src(title=""):
 
 def get_money_chart_src(title="Player Wealth Leaderboard", game_id=29): # Brett!
     """
-
     :param title: the title that will be displayed in the resulting plot
     :param game_id: the ID for the game whose leaderboard should be displayed
     :return: returns the filename of the plot
