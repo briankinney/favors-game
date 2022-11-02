@@ -166,4 +166,4 @@ def render_edit_favor(id):
 
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
-    app.run(debug=True, host='localhost')
+    app.run(debug=True, host='localhost', port = 5002)

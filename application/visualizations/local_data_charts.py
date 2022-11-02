@@ -1,14 +1,17 @@
+import matplotlib
+matplotlib.use("Agg")   ## changes the backend to address "not threadsafe" apparently
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
 import application.models
 
 def get_chart_src(title=""):
-    s = pd.Series([1, 2, 3])
-    fig, ax = plt.subplots()
-    s.plot.bar(title=title)
+    ## s = pd.Series([1, 2, 3])
+    ## fig, ax = plt.subplots()
+    ## s.plot.bar(title=title)
     filename = './static/dataset1.png'
-    fig.savefig(filename)
+    ## fig.savefig(filename)
     return filename
 
 
@@ -20,8 +23,27 @@ def get_leaderboard_src(): # YiJun!
     # In this function, we must create a new file that contains the visualization you want to display.
     # Return the path the newly-created file.
 
-    # For demonstration purposes, just put a random file in there.
-    return "/static/wii-music.png"
+    ## get data and sort
+    data = pd.DataFrame(application.models.get_exchanges_game_29())
+    data.reset_index(inplace = True)
+    data = data[["giver", "points"]]
+    data = data.groupby(by=["giver"], as_index = False).sum()
+    data.sort_values(inplace=True, by=["points"], ascending=True)
+    ## I haven't the foggiest why. but ascending = False, which you would think creates a descending plot?
+        ## it doesn't. you get an ascending plot.
+
+    ## start viz
+    ## fig = plt.figure(figsize=(10, 5))
+    plt.barh(data["giver"], data["points"])
+    plt.xlabel("Jollies acquired")
+    plt.ylabel("Players in game")
+    plt.title("Player Leaderboard")
+
+    ## save viz
+    savefile = "./static/leaderboard.png"
+    plt.savefig(savefile)
+
+    return savefile
 
 
 def get_favors_table(name="my name"): # Lu
