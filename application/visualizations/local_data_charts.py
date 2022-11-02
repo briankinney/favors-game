@@ -17,7 +17,6 @@ def get_chart_src(title=""):
 
 def get_money_chart_src(title="Player Wealth Leaderboard", game_id=29): # Brett!
     """
-
     :param title: the title that will be displayed in the resulting plot
     :param game_id: the ID for the game whose leaderboard should be displayed
     :return: returns the filename of the plot
