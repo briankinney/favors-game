@@ -136,3 +136,6 @@ dmypy.json
 
 # Intellij files
 .idea/*
+
+# misc
+.DS_Store

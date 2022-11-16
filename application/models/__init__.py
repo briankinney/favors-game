@@ -23,6 +23,19 @@ def create_game(data):
         print(inserted_id)
         return inserted_id
 
+def get_active_games() -> list[dict]:
+    """
+    Return a list of currently active games.
+    A game is active if less than 10 minutes since time created.
+    TODO: Verify defintion of an active game.
+    """
+    sql = "SELECT id FROM games WHERE TIMEDIFF(MINUTE, created, CURRENT_TIMESTAMP()) < 10 "
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result]
+        return data
+
+
 
 def get_players(game_id):
     sql = text("SELECT * FROM players WHERE game_id = :game_id;")
@@ -135,17 +148,23 @@ def get_player_data(player_id):
         data = [dict(row) for row in result][0]
         return data
 
-
 def get_exchanges_game_29():
-    sql = """SELECT giver.name as giver,
-       receiver.name as receiver,
-       f.name as favor,
-       boost_value as boosted,
-       f.jollies as points
-    FROM exchanges join players giver on exchanges.giving_player = giver.id
-                        join players receiver on exchanges.receiving_player = receiver.id
-                         join favors f on exchanges.favor_id = f.id
-    WHERE exchanges.game_id = 29;"""
+    sql = """
+        SELECT
+            exchanges.id AS exchange_id,
+            givers.name AS giver, receivers.name AS receiver,
+            favors.name AS favor, favors.type AS favor_type,
+            favor.jollies AS points, exchanges.boost_value
+        FROM
+            exchanges LEFT JOIN players givers
+                ON  givers.id = exchanges.giving_player
+            LEFT JOIN players receivers
+                ON  receivers.id = exchanges.receiving_player
+            LEFT JOIN favors
+                on  exchanges.favor_id = favors.id
+        WHERE
+            exchanges.game_id = 29  ;
+        """
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
