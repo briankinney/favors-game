@@ -3,8 +3,12 @@ dotenv.load_dotenv()
 
 import sqlalchemy
 from sqlalchemy import text
+from jinja2 import Environment, FileSystemLoader
 
 from os import environ
+import pathlib
+from typing import List, Dict
+
 
 DATABASE_URL = f"postgresql://{environ['DB_USERNAME']}:{environ['DB_PASSWORD']}@kt-dev.ca05z1awppqr.us-east-1.rds.amazonaws.com:5432/favors_game"
 engine = sqlalchemy.create_engine(DATABASE_URL)
@@ -166,3 +170,25 @@ def get_exchanges_game_29():
         result = conn.execute(text(sql))
         data = [dict(row) for row in result]
         return data
+
+
+def query_data_with_template(template_file: str, **kwargs) -> List[Dict]:
+    """
+    Build a query by filling in jinja-templated sql file with **kwargs and pass the query to database.
+    Return the output as a list of dictionaries.
+
+    Inputs
+    ----
+        sql_template: str or POSIX path object
+        **kwargs: template variables
+    """
+    template_dir = pathlib.Path(__file__).parent.absolute() / 'sql'
+    templateEnv = Environment(
+        loader=FileSystemLoader(str(template_dir))
+    )
+    sql = templateEnv.get_template(template_file).render(**kwargs)
+    print(sql)
+    with engine.connect() as conn:
+        cursor = conn.execute(text(sql))
+        result = cursor.fetchall()
+    return [dict(row) for row in result]

@@ -5,4 +5,5 @@ PyJWT
 flask_session
 python-dotenv
 pandas
-matplotlib
+matplotlib==3.5.0
+seaborn
