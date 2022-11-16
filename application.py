@@ -1,10 +1,10 @@
 # !/usr/bin/env python3
+import os
 
 from application.models import *
 from application.visualizations.local_data_charts import *
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session
-
 
 from application.metabase.embed_link import get_dashboard_embed
 
@@ -14,16 +14,34 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
 
+print(f"Debugging: running from {os.getcwd()}")
+
+#################### TEACHING ROUTES ###############################
+
 # Route to homepage
 @app.route("/", methods=['GET'])
 def render_home():
     user_input = request.args.get("userInput")
-    print(user_input)
     visualization = get_chart_src(title=user_input)
+
     return render_template('home.html',
                            visualization=visualization,
                            **request.args)
 
+@app.route("/insights", methods=['GET'])
+def render_insights():
+    leaderboard_src = get_leaderboard_src()
+    favors_table = get_favors_table()
+    return render_template('insights.html',
+                           leaderboard_src=leaderboard_src,
+                           favors_table=favors_table,
+                           **request.args)
+
+
+
+
+
+#################### GAME ROUTES ###############################
 
 @app.route("/", methods=['POST'])
 def render_index():
@@ -70,7 +88,11 @@ def render_game_play(game_id):
     favors = get_favors()
     print(session)
 
-    my_favors = get_my_favors(user_id=session["id"])
+    try:
+        my_favors = get_my_favors(user_id=session["id"])
+    except KeyError:
+        return redirect(url_for('join_game', game_id=game_id))
+
     return render_template('play.html', page_title="The Favors Game™",
                            game_id=game_id,
                            players=players,
@@ -111,18 +133,18 @@ def verify_exchange(game_id, exchange_id):
     verify_exchange_completion(exchange_id, receiver_id, game_id, boost_value)
     return redirect(f"/game/{game_id}/play")
 
+
 @app.route("/favors", methods=['GET'])
 def favors():
     favors = get_favors()
     return render_template('favors.html', page_title="Favors",
                            favors=favors)
 
-@app.route("/favors/add_favor", methods=['POST'], defaults={'game_id':None})
+
+@app.route("/favors/add_favor", methods=['POST'], defaults={'game_id': None})
 @app.route("/favors/add_favor/<game_id>", methods=['POST'])
 def add_favor(game_id=None):
-
     return redirect(url_for('render_add_favor', game_id=game_id))
-
 
 
 @app.route("/favors/add_favor/create", methods=['GET'])
@@ -130,9 +152,9 @@ def render_add_favor(game_id=None):
     return render_template('add_favor.html', page_title="Favors",
                            game_id=game_id)
 
+
 @app.route("/favors/<id>/edit_favor", methods=['POST'])
 def edit_favor(id):
-
     return redirect(url_for('render_edit_favor', id=id))
 
 
@@ -144,4 +166,4 @@ def render_edit_favor(id):
 
 # Necessary to run app if app.py is executed as a script
 if __name__ == "__main__":
-    app.run(debug=True, host='localhost')
+    app.run(debug=True, host='localhost', port = 5002)

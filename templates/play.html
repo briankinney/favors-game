@@ -1,27 +1,6 @@
 {% extends "master.html" %}
 {% block body %}
 
-<script>
-    function myFunction() {
-      // Declare variables
-      var input, filter, ul, li, a, i, txtValue;
-      input = document.getElementById('myInput');
-      filter = input.value.toUpperCase();
-      ul = document.getElementById("mySearchable");
-      li = ul.getElementsByTagName("select");
-
-      // Loop through all list items, and hide those who don't match the search query
-      for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("option")[0];
-        txtValue = a.textContent || a.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          li[i].style.display = "";
-        } else {
-          li[i].style.display = "none";
-        }
-      }
-}
-</script>
 
 <div class="row">
     <div class="col">
@@ -35,11 +14,11 @@
                         <label for="giver_id">I am: </label>
                         <select class="form-control" id="giver_id" name="giver_id">
                             {% for sender in players %}
-                                {% if session['id'] == sender['id'] %}
-                                <option value="{{ sender['id'] }}" selected>{{ sender["name"] }}</option>
-                                {% else %}
-                                <option value="{{ sender['id'] }}">{{ sender["name"] }}</option>
-                                {% endif %}}
+                            {% if session['id'] == sender['id'] %}
+                            <option value="{{ sender['id'] }}" selected>{{ sender["name"] }}</option>
+                            {% else %}
+                            <option value="{{ sender['id'] }}">{{ sender["name"] }}</option>
+                            {% endif %}}
                             {% endfor %}
                         </select>
                     </div>
@@ -47,7 +26,9 @@
                         <label for="favor_id">giving favor: </label>
                         <select class="form-control" id="favor_id" name="favor_id">
                             {% for favor in favors %}
-                            <option class="searchable" value="{{ favor['id'] }}">{{ favor['name'] }}: {{ favor['description'] }} (cost: {{ favor['cost'] }})</option>
+                            <option class="searchable" value="{{ favor['id'] }}">{{ favor['name'] }}: {{
+                                favor['description'] }} (cost: {{ favor['cost'] }})
+                            </option>
                             {% endfor %}
                         </select>
                     </div>
@@ -74,37 +55,16 @@
     </div>
 </div>
 
-<div>
-
-    <ul id="myUL">
-      <li><a href="#">Adele</a></li>
-      <li><a href="#">Agnes</a></li>
-      <li><a href="#">Billy</a></li>
-      <li><a href="#">Bob</a></li>
-      <li><a href="#">Calvin</a></li>
-      <li><a href="#">Christina</a></li>
-      <li><a href="#">Cindy</a></li>
-    </ul>
-</div>
 <div class="row">
-    <div class="col-1">
-    </div>
     <div class="col">
         <h5>Previous favors:</h5>
-        <ul>
-            {% for favor in my_favors %}
-            <li>{{ favor["me"] }} gave {{ favor["receiver"] }}: {{ favor["favor_name"] }} and earned {{ favor["favor_jollies"] }} jollies (cost: {{ favor["favor_cost"] }})</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="col-1">
-    </div>
-</div>
+        I want to see what is happening in this game! And what I've done in this game!
 
-<div>
-    <div class="col-12">
+
+
+
         <form action="/favors/add_favor/{{ game_id }}" method="post">
-            <button type="submit" class="btn btn-primary" >Add Favor</button>
+            <button type="submit" class="btn btn-primary">Add Favor</button>
         </form>
     </div>
 </div>

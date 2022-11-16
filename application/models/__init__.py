@@ -1,9 +1,12 @@
+import dotenv
+dotenv.load_dotenv()
+
 import sqlalchemy
 from sqlalchemy import text
 
 from os import environ
 
-DATABASE_URL = f"postgresql://favors_game:{environ['DB_PASSWORD']}@kt-dev.ca05z1awppqr.us-east-1.rds.amazonaws.com:5432/favors_game"
+DATABASE_URL = f"postgresql://{environ['DB_USERNAME']}:{environ['DB_PASSWORD']}@kt-dev.ca05z1awppqr.us-east-1.rds.amazonaws.com:5432/favors_game"
 engine = sqlalchemy.create_engine(DATABASE_URL)
 
 
@@ -141,3 +144,25 @@ def get_player_data(player_id):
         data = [dict(row) for row in result][0]
         return data
 
+def get_exchanges_game_29():
+    sql = """
+        SELECT
+            exchanges.id AS exchange_id,
+            givers.name AS giver, receivers.name AS receiver,
+            favors.name AS favor, favors.type AS favor_type,
+            favor.jollies AS points, exchanges.boost_value
+        FROM
+            exchanges LEFT JOIN players givers
+                ON  givers.id = exchanges.giving_player
+            LEFT JOIN players receivers
+                ON  receivers.id = exchanges.receiving_player
+            LEFT JOIN favors
+                on  exchanges.favor_id = favors.id
+        WHERE
+            exchanges.game_id = 29  ;
+        """
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result]
+        return data
