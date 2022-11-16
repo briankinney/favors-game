@@ -154,7 +154,7 @@ def get_exchanges_game_29():
             exchanges.id AS exchange_id,
             givers.name AS giver, receivers.name AS receiver,
             favors.name AS favor, favors.type AS favor_type,
-            favor.jollies AS points, exchanges.boost_value
+            favors.jollies AS points, exchanges.boost_value
         FROM
             exchanges LEFT JOIN players givers
                 ON  givers.id = exchanges.giving_player
