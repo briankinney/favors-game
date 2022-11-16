@@ -19,6 +19,19 @@ def create_game(data):
         print(inserted_id)
         return inserted_id
 
+def get_active_games() -> list[dict]:
+    """
+    Return a list of currently active games.
+    A game is active if less than 10 minutes since time created.
+    TODO: Verify defintion of an active game.
+    """
+    sql = "SELECT id FROM games WHERE TIMEDIFF(MINUTE, created, CURRENT_TIMESTAMP()) < 10 "
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result]
+        return data
+
+
 
 def get_players(game_id):
     sql = text("SELECT * FROM players WHERE game_id = :game_id;")
@@ -130,7 +143,6 @@ def get_player_data(player_id):
         result = conn.execute(text(sql))
         data = [dict(row) for row in result][0]
         return data
-
 
 def get_exchanges_game_29():
     sql = """
