@@ -92,7 +92,7 @@ def get_awards_src():
     return awards
 
 
-Best Quality: Most boosted favors
+# Best Quality: Most boosted favors
 
 
 
