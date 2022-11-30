@@ -110,18 +110,18 @@ def render_game_report(id):
 def exchange_favor(game_id):
     formdata = request.form
     try:
-        giver_id = formdata["giver_id"]
-    except:
-        giver_id = session["id"]
-    if giver_id is None:
-        giver_id = session["id"]
+        giver = formdata["giver_id"]
+    except KeyError:
+        giver = session["id"]
+    if giver is None:
+        giver = session["id"]
     receiver_id = formdata["receiver"]
     favor_id = formdata["favor_id"]
     if "boost_value" not in formdata:
         boost_value = 1
     else:
         boost_value = formdata["boost_value"]
-    exchange_id = create_exchange_object(game_id, favor_id, giver_id, receiver_id, boost_value)
+    exchange_id = create_exchange_object(game_id, favor_id, giver, receiver_id, boost_value)
     return redirect(f"/game/{game_id}/play")
 
 

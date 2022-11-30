@@ -116,7 +116,7 @@ def verify_exchange_completion(exchange_id, player_id, game_id, boost_value):
 
 
 def create_player(form_data, game_id):
-    name = form_data['name']
+    name = ' '.join(map(lambda x: x[0].upper() + x[1:], form_data['name'].split()))
     sql = f"SELECT * FROM players WHERE name LIKE '{name}' AND game_id = {game_id};"
 
     with engine.connect() as conn:
@@ -146,6 +146,7 @@ def get_player_data(player_id):
     with engine.connect() as conn:
         result = conn.execute(text(sql))
         data = [dict(row) for row in result][0]
+        data["name"] = ' '.join(map(lambda x: x[0].upper() + x[1:], data["name"].split()))
         return data
 
 def get_exchanges_game_29():
@@ -165,6 +166,54 @@ def get_exchanges_game_29():
         WHERE
             exchanges.game_id = 29  ;
         """
+
+    with engine.connect() as conn:
+        result = conn.execute(text(sql))
+        data = [dict(row) for row in result]
+        return data
+
+
+def get_exchanges_game_31():
+    sql = """
+        SELECT
+            exchanges.id AS exchange_id,
+            givers.name AS giver, receivers.name AS receiver,
+            favors.name AS favor, favors.type AS favor_type,
+            favors.jollies AS points, exchanges.boost_value
+        FROM
+            exchanges LEFT JOIN players givers
+                ON  givers.id = exchanges.giving_player
+            LEFT JOIN players receivers
+                ON  receivers.id = exchanges.receiving_player
+            LEFT JOIN favors
+                on  exchanges.favor_id = favors.id
+        WHERE
+            exchanges.game_id = 31  ;
+        """
+
+    with engine.connect() as conn:
+      result = conn.execute(text(sql))
+      data = [dict(row) for row in result]
+      return data
+
+
+def get_heart_to_heart_exchanges():
+    sql = """
+            SELECT
+                exchanges.id AS exchange_id,
+                givers.name AS giver, receivers.name AS receiver,
+                favors.name AS favor, favors.type AS favor_type,
+                favors.jollies AS points, exchanges.boost_value
+            FROM
+                exchanges LEFT JOIN players givers
+                    ON  givers.id = exchanges.giving_player
+                LEFT JOIN players receivers
+                    ON  receivers.id = exchanges.receiving_player
+                LEFT JOIN favors
+                    on  exchanges.favor_id = favors.id
+            WHERE
+                favors.type = 'heart to heart'  ;
+            """
 
     with engine.connect() as conn:
         result = conn.execute(text(sql))
