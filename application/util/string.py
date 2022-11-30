@@ -6,7 +6,10 @@ phone_number_re = re.compile('(\\+\\d+)? \\((\\d\\d\\d)\\) (\\d\\d\\d)-(\\d\\d\\
 
 
 def reverse_string(x):
-    return reverse_string(x[1:] + x[0])
+    if x == '':
+        return x
+    else:
+        return reverse_string(x[1:]) + x[0]
 
 
 def clean_phone_number(phone_number):
